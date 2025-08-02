@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Home, Settings, User, LogOut, AlignJustify } from "lucide-react";
+import { Home, Settings, User, LogOut, AlignJustify, Search, Plus } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -9,20 +9,17 @@ export function Sidebar() {
 
   const links = [
     { href: "/teams", label: "Times", icon: Home },
-    { href: "/perfil", label: "Perfil", icon: User },
-    { href: "/config", label: "Config", icon: Settings },
+    { href: "/create", label: "Criar time", icon: Plus },
+    { href: "/search", label: "Pesquisar", icon: Search },
   ];
 
   function handleLogout() {
-    // Exemplo de logout. Substitua com lógica real.
     console.log("Logout clicado");
   }
 
   return (
-        <aside className="md:w-64 h-screen flex flex-col justify-between border-r dark:border-zinc-900 bg-gray-200 dark:bg-stone-800 p-4 border-gray-300">
+      <aside className="hidden md:flex md:w-64 h-screen flex flex-col justify-between border-r dark:border-zinc-900 bg-gray-200 dark:bg-stone-800 p-4 border-gray-300">
 
-      
-      {/* Header e Navegação */}
       <div>
         <div className="mb-6">
           <h2 className="text-xl font-bold text-zinc-800 dark:text-white">PokemonTeams</h2>
@@ -45,7 +42,6 @@ export function Sidebar() {
         </nav>
       </div>
 
-      {/* Botão de Logout */}
       <Button
         variant="ghost"
         className="mt-6 w-full flex justify-start space-x-2 hover:bg-red-200 dark:hover:bg-red-900 text-red-700 hover:text-red-700 dark:text-red-400"
