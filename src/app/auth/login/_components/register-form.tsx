@@ -1,10 +1,13 @@
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/user-context";
 import { api } from "@/lib/axios";
 import { setToken } from "@/lib/token";
+import { AlertCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function Registerform() {
+    const { login } = useAuth();
     const router = useRouter();
 
     const [name, setName] = useState("");
@@ -12,30 +15,25 @@ export function Registerform() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    const [error, setError] = useState<string | null>();
-
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError(null);
-        setLoading(true);
 
         try {
-            console.log(name, email, password, confirmPassword)
             const response = await api.post("/users", {
                 name: name,
                 email: email,
                 password: password,
                 password_confirmation: confirmPassword
             });
-
-            const login = await api.post("/login", { email, password });
-            setToken(login.data.acess_token);
+            const loginResponse = await api.post("/login", { email, password });
+            login(loginResponse.data);
             router.push("/teams");
-        } catch (error: any) {
-            setError(error.message)
+        } catch (err: any) {
+            console.log("error")
         }
+
     }
 
     return (
@@ -43,7 +41,7 @@ export function Registerform() {
             <div>
                 <label className="text-stone-800 dark:text-gray-200 block text-sm font-medium">Nome</label>
                 <Input
-                    name="email"
+                    name="name"
                     className="h-12"
                     type="text"
                     value={name}
@@ -89,7 +87,7 @@ export function Registerform() {
                 type="submit"
                 className="w-full bg-black dark:bg-stone-800 dark:hover:bg-red-800 text-white py-2 rounded hover:bg-red-800 transition cursor-pointer"
             >
-                Register
+                {loading ? "Carregando..." : "Registrar"}
             </button>
         </form>
     )

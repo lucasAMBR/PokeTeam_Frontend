@@ -9,10 +9,10 @@ import { usePathname } from "next/navigation";
 import path from "path";
 import Image from "next/image";
 import { useState } from "react";
+import { getUserData } from "@/lib/user";
 
 export function Sidebar() {
-  const { user } = useAuth()
-  const { theme } = useTheme();
+  const userData = getUserData()
 
   const pathname = usePathname();
 
@@ -34,11 +34,11 @@ export function Sidebar() {
           <hr className="border-t border-gray-200 dark:border-stone-700 my-6" />
           <div className="flex flex-row items-center dark:bg-stone-700 bg-gray-200 p-2 rounded-md gap-2 my-4">
             <div className="p-4 rounded-full dark:bg-stone-900 bg-gray-400">
-              <User2 onClick={() => console.log(user?.name)} />
+              <User2 onClick={() => console.log(userData?.name)} />
             </div>
             <div className="w-full">
-              <p className="font-semibold">{user?.name}</p>
-              <p className="text-sm">{user?.email}</p>
+              <p className="font-semibold">{userData?.name}</p>
+              <p className="text-sm">{userData?.email}</p>
             </div>
           </div>
         </div>
@@ -67,7 +67,7 @@ export function Sidebar() {
 
 export function MobileSidebar() {
   const [open, setOpen] = useState(false);
-  const { user } = useAuth();
+  const userData = getUserData()
   const pathname = usePathname();
 
   const links = [
@@ -96,12 +96,9 @@ export function MobileSidebar() {
           aria-hidden="true"
         />
       )}
-
-      {/* Drawer do menu */}
       <aside
         className={cn("fixed top-0 left-0 h-full w-64 bg-gray-50 dark:bg-stone-800 p-4 border-r border-gray-300 dark:border-zinc-900 flex flex-col justify-between z-[1001] transform transition-transform duration-300", open ? "translate-x-0" : "-translate-x-full")}>
         <div>
-          {/* Logo */}
           <div className="mb-6 flex flex-col items-center">
             <Image
               src={"/assets/pokeball_logo.png"}
@@ -120,20 +117,18 @@ export function MobileSidebar() {
 
           <hr className="border-t border-gray-200 dark:border-stone-700 my-6" />
 
-          {/* User info */}
           <div className="flex flex-row items-center dark:bg-stone-700 bg-gray-200 p-2 rounded-md gap-2 my-4">
             <div className="p-4 rounded-full dark:bg-stone-900 bg-gray-400">
-              <User2 onClick={() => console.log(user?.name)} />
+              <User2 onClick={() => console.log(userData?.name)} />
             </div>
             <div className="w-full">
-              <p className="font-semibold">{user?.name}</p>
-              <p className="text-sm">{user?.email}</p>
+              <p className="font-semibold">{userData?.name}</p>
+              <p className="text-sm">{userData?.email}</p>
             </div>
           </div>
 
           <hr className="border-t border-gray-200 dark:border-stone-700 my-6" />
 
-          {/* Navegação */}
           <nav className="flex flex-col space-y-2 my-4">
             {links.map(({ href, label, icon: Icon }) => (
               <Link
@@ -155,7 +150,6 @@ export function MobileSidebar() {
           </nav>
         </div>
 
-        {/* Logout - pode ser o mesmo diálogo que no desktop */}
         <LogoutDialog />
       </aside>
     </>

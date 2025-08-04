@@ -4,14 +4,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthResponse, User } from "@/types/auth";
 import { getToken, setToken, clearToken } from "@/lib/token";
-import { getUserData, setUserData } from "@/lib/user";
+import { clearUserData, getUserData, setUserData } from "@/lib/user";
+import { api } from "@/lib/axios";
 
 interface AuthContextType {
   user: User | null;
   token: string | null;
   login: (data: AuthResponse) => void;
   logout: () => void;
-  isAuthenticated: boolean;
+  isInvalid: () => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -38,12 +39,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   function logout() {
     clearToken();
+    clearUserData();
     setTokenState(null);
     setUser(null);
   }
 
+  const isInvalid = async (): Promise<boolean> => {
+    const token = getToken();
+    if (!token) return true;
+
+    try {
+      const response = await api.get("/perfil", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUser(response.data.user);
+      return false;
+    } catch {
+      return true;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isAuthenticated: !!token }}>
+    <AuthContext.Provider value={{ user, token, login, logout, isInvalid }}>
       {children}
     </AuthContext.Provider>
   );

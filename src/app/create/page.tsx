@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MobileSidebar, Sidebar } from "@/components/ui/sidebar";
 import { usePokemonsByGeneration } from "@/hooks/UsePokemonsByGeneration";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PokemonListByGeneration from "./_components/pokemon_list_by_generation";
 import { ReducedPokemon } from "@/types/PokemonReduced";
 import Image from "next/image";
@@ -16,14 +16,31 @@ import { Button } from "@/components/ui/button";
 import { capitalizeFirstLetter } from "@/lib/text";
 import { api } from "@/lib/axios";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/user-context";
+import { InvalidTokenDialog } from "@/components/ui/invalid-session-dialog";
 
 export default function CreateTeam() {
+    const { isInvalid } = useAuth();
+
     const router = useRouter();
 
     const [choosedGeneration, setChoosedGeneration] = useState<string>("primeira");
 
     const [teamName, setTeamName] = useState("");
     const [selectedPokemons, setSelectedPokemon] = useState<{ name: string; image_url: string; types: string[] }[]>([]);
+
+    const [tokenIsInvalid, setTokenIsInvalid] = useState<boolean | null>(null);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            (async () => {
+                const result = await isInvalid();
+                setTokenIsInvalid(result);
+            })()
+        }, 120000);
+
+        return () => clearInterval(interval);
+    }, [])
 
     function addPokemonSelection(name: string, sprite: string, types: string[]) {
         if (selectedPokemons.length >= 5) {
@@ -118,6 +135,9 @@ export default function CreateTeam() {
                 </div>
                 <Toaster />
                 <ThemeButton />
+                {tokenIsInvalid &&
+                    <InvalidTokenDialog />
+                }
             </div>
         </div>
     )

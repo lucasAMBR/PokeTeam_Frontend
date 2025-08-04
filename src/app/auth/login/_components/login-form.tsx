@@ -26,13 +26,15 @@ export function Loginform() {
 
         try {
             const response = await api.post("/login", { email, password });
-            console.log(response.data)
             login(response.data);
+            setLoading(false)
             router.push("/teams");
         } catch (error: any) {
-            console.log(error)
+            console.log(error.response.data.message)
+            setLoading(false)
             setError(error.response.data.message)
         }
+        
     }
 
     return (
@@ -69,7 +71,7 @@ export function Loginform() {
                 type="submit"
                 className="w-full bg-black dark:bg-stone-800 dark:hover:bg-red-800 text-white py-2 rounded hover:bg-red-800 transition cursor-pointer"
             >
-                Login
+                {loading ? "Carregando..." : "Login"}
             </button>
         </form>
     )
