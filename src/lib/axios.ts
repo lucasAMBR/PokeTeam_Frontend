@@ -9,7 +9,6 @@ export const api = axios.create({
     },
 });
 
-// Adiciona token automaticamente no header
 api.interceptors.request.use((config) => {
   const token = getToken()
   if (token) {

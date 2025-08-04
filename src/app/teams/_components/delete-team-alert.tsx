@@ -15,9 +15,9 @@ import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 
 type DeleteTeamInfos = {
-    teamId: number;
-    teamName: string;
-    onConfirm: (id: number) => void;
+  teamId: number;
+  teamName: string;
+  onConfirm: (id: number) => void;
 }
 
 
@@ -25,7 +25,7 @@ export function DeleteTeamDialog(infos: DeleteTeamInfos) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <button className="bg-red-600 p-2 m-1 rounded-sm text-white cursor-pointer hover:bg-red-900"><Trash /></button>
+        <button className="bg-red-600 p-2 m-1 rounded-sm text-white cursor-pointer hover:bg-red-700"><Trash /></button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -35,8 +35,8 @@ export function DeleteTeamDialog(infos: DeleteTeamInfos) {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <AlertDialogAction onClick={() => infos.onConfirm(infos.teamId)}>Confirmar</AlertDialogAction>
+          <AlertDialogCancel className="cursor-pointer">Cancelar</AlertDialogCancel>
+          <AlertDialogAction onClick={() => infos.onConfirm(infos.teamId)} className="bg-red-600 hover:bg-red-700 text-white cursor-pointer">Confirmar</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

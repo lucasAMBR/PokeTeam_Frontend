@@ -14,14 +14,14 @@ import PokemonList from "./_components/pokemon-list";
 export default function TeamsPage() {
 
     return (
-    <div className="flex flex-col md:flex-row pt-14 md:pt-0">
-        <Sidebar />
-        <MobileSidebar />
-        <div className="w-full p-6 max-h-screen overflow-y-auto">
-            <h1 className="text-3xl font-bold">Seus Times</h1>
-            <PokemonList />
-            <ThemeButton />
+        <div className="flex flex-col md:flex-row pt-14 md:pt-0 bg-gray-100 dark:bg-transparent">
+            <Sidebar />
+            <MobileSidebar />
+            <div className="w-full p-6 max-h-screen overflow-y-auto">
+                <h1 className="text-3xl font-bold">Seus Times</h1>
+                <PokemonList />
+                <ThemeButton />
+            </div>
         </div>
-    </div>
-  );
+    );
 }
